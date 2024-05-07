@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upcoming Events</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Playfair Display', serif;
+            background-image: url('https://www.saturdaygift.com/wp-content/uploads/Cute-aesthetic-calendars-by-SaturdayGift.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+        }
+        .container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            width: 90%; /* Adjusted width for better visibility */
+            max-width: 600px; /* Added max-width for responsiveness */
+            margin: 20px auto; /* Centering the container */
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .event {
+            border-bottom: 1px solid #ccc;
+            padding: 20px 0;
+        }
+        .event:last-child {
+            border-bottom: none;
+        }
+        .event .name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        .event .time {
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .event .description {
+            color: #555;
+        }
+        .button {
+            display: inline-block; /* Changed to inline-block */
+            margin: 10px; /* Adjusted margin */
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        input[type="text"], textarea, input[type="datetime-local"] {
+            width: calc(100% - 22px); /* Adjusted width */
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+<form class="container" id="form-id" action="/dashboard" method="post">
+    <h1>Upcoming Events</h1>
+    <div id="eventsContainer">
+        {% for event in events %}
+        <div class="event">
+            <div class="name">{{ event.name }}</div>
+            <div class="time">Time: {{ event.time }}</div>
+            <div class="description">{{ event.description }}</div>
+            <button class="removeEvent">Remove</button>
+            
+            <!-- Button for deleting a task -->
+            <button type="button" class="close" onClick="deleteTask( '{{ task.id }}' )">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+        </div>
+        {% endfor %}
+    </div>
+    <h2>Add New Event</h2>
+    <input type="text" id="eventName" name="name" placeholder="Event Name">
+    <input type="datetime-local" id="eventTime" name="time" placeholder="Event Time">
+    <textarea id="eventDescription" name="description" placeholder="Event Description"></textarea>
+    <button id="addEvent" type="submit">Add Event</button>
+    <button id="logout">Logout</button>
+</form>
+
+<!-- 
+<div class="container">
+    <h1>Upcoming Events</h1>
+    <div id="eventsContainer"></div>
+    <h2>Add New Event</h2>
+    <input type="text" id="eventName" placeholder="Event Name">
+    <input type="datetime-local" id="eventTime" placeholder="Event Time">
+    <textarea id="eventDescription" placeholder="Event Description"></textarea>
+    <button id="addEvent" type="submit">Add Event</button>
+    <button id="logout">Logout</button>
+</div> -->
+
+<!-- <script>
+// Array to store event data
+let eventsData = [];
+
+// Function to render events
+function renderEvents() {
+    const eventsContainer = document.getElementById('eventsContainer');
+    eventsContainer.innerHTML = '';
+    eventsData.forEach(eventData => {
+        const eventDiv = document.createElement('div');
+        eventDiv.classList.add('event');
+        eventDiv.innerHTML = `
+            <div class="name">${eventData.name}</div>
+            <div class="time">Time: ${new Date(eventData.time).toLocaleString()}</div>
+            <div class="description">${eventData.description}</div>
+            <button class="removeEvent">Remove</button>
+        `;
+        eventsContainer.appendChild(eventDiv);
+
+        // Add event listener to the remove button
+        eventDiv.querySelector('.removeEvent').addEventListener('click', function() {
+            eventsData = eventsData.filter(event => event !== eventData);
+            renderEvents();
+        });
+    });
+}
+
+// Function to add new event
+document.getElementById('addEvent').addEventListener('click', function() {
+    const eventName = document.getElementById('eventName').value;
+    const eventTime = document.getElementById('eventTime').value;
+    const eventDescription = document.getElementById('eventDescription').value;
+
+    if (eventName && eventTime && eventDescription) {
+        eventsData.push({ name: eventName, time: new Date(eventTime), description: eventDescription });
+        eventsData.sort((a, b) => a.time - b.time); // Sort events by time
+        renderEvents();
+
+        // Clear input fields after adding event
+        document.getElementById('eventName').value = '';
+        document.getElementById('eventTime').value = '';
+        document.getElementById('eventDescription').value = '';
+    } else {
+        alert('Please fill in all fields.');
+    }
+});
+
+// Logout function
+document.getElementById('logout').addEventListener('click', function() {
+    // Simulate logout by clearing user data
+    eventsData = [];
+    // Redirect to root URL
+    window.location.href = '/';
+});
+</script> -->
+</body>
+</html>
+
