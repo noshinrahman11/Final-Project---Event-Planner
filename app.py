@@ -5,6 +5,8 @@ from flask_login import LoginManager, login_user, logout_user, login_required, U
 from flask_session import Session
 # import json
 import re
+from serpapi import GoogleSearch
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'keykeykeykey'
@@ -134,6 +136,32 @@ def dashboard():
     user_events = current_user.events
     return render_template('dashboard2.html', events=user_events, user=current_user) #, events=events
 
+@app.route('/fetch_events')
+def fetch_events():
+    params = {
+        "engine": "google_events",
+        "q": "Events in New York City",
+        "hl": "en",
+        "gl": "us",
+        "api_key": "1b81fde7a5d3191516a7b42fe11591590b2102c2e7bc3b290c42e70bc12dd5ac"
+    }
+
+    search = GoogleSearch(params)
+    results = search.get_dict()
+    events_results = results["events_results"]
+
+    return jsonify(events_results)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out successfully!', category='info')
+    return redirect(url_for('index'))
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 # Deletes an item on the to-do list (home page)
 # @app.route('/delete-event', methods=['POST'])
@@ -161,15 +189,7 @@ def dashboard():
 #         flash('Event added successfully!', category='success')
 #         return redirect(url_for('dashboard'))
 
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    flash('You have been logged out successfully!', category='info')
-    return redirect(url_for('index'))
 
-if __name__ == '__main__':
-    app.run(debug=True)
 
 
 

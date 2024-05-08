@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Upcoming Events</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <style>
     body {
         font-family: 'Playfair Display', serif;
@@ -107,7 +108,7 @@
     .sorting-buttons .button:hover {
         background-color: #BCC3D0; /* Dark green */
     }
-    </style>
+</style>
     <!-- Flash messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -133,20 +134,11 @@
     <!-- User's Event list-->
     <h1>Upcoming Events</h1>
     <div id="eventsContainer">
-        {% for event in events %} <!-- |sort(attribute='time') -->
+        {% for event in events %} 
         <div class="event">
             <div class="name">{{ event.name }}</div>
             <div class="time">Time: {{ event.time }}</div>
             <div class="description">{{ event.description }}</div>
-
-
-            <!-- <button class="removeEvent" onClick="deleteTask( '{{ event.id }}' )">Remove</button> -->
-            
-            
-            <!-- Button for deleting a task -->
-            <!-- <button type="button" class="close" onClick="deleteTask( '{{ event.id }}' )">
-                <span aria-hidden="true">&times;</span>
-            </button>  -->
         </div>
         {% endfor %}
     </div>
@@ -159,10 +151,14 @@
     <button id="addEvent" type="submit">Add Event</button>
     <!-- <button id="logout">Logout</button> -->
     <a href="/logout"><button type="button">Logout</button></a>
-</form>
 
-    
-<!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+    <h1>Nearby Events</h1>
+    <div id="nearbyEvents">
+        <!-- Button to fetch events -->
+        <button onclick="fetchEventsFromApi()">Generate Events in NYC</button>
+
+    </div>
+</form>
 
 <script>
     // Automatically fade out flash messages after 5 seconds
@@ -217,19 +213,6 @@
         });
     });
 
-    // // Function to sort events by time
-    // document.getElementById('sortByTime').addEventListener('click', function() {
-    //     const eventsContainer = document.getElementById('eventsContainer');
-    //     const events = Array.from(eventsContainer.querySelectorAll('.event'));
-    //     events.sort((a, b) => {
-    //         const timeA = new Date(a.querySelector('.time').textContent);
-    //         const timeB = new Date(b.querySelector('.time').textContent);
-    //         return timeA - timeB;
-    //     });
-    //     events.forEach(event => eventsContainer.appendChild(event));
-    // });
-
-
     // Makes sure that all events with empy fields are not added
     function validateForm() {
         var eventName = document.getElementById('eventName').value;
@@ -244,138 +227,30 @@
         return true; // Allow form submission
     }
 
-    function apiRequest (path,obj) {
-        axios.post(path, obj).then(
-            (response) => {
-                let result = response.data;
-                console.log(result);
-            },
-            (error) => {
+    function fetchEventsFromApi() {
+        axios.get('/fetch_events')
+            .then(function(response) {
+                let events = response.data;
+                // Process the events data here
+                let eventsHtml = '';
+                events.forEach(event => {
+                    eventsHtml += `
+                        <div class="event">
+                            <div class="name">${event.title}</div>
+                            <div class="time">Time: ${event.date.start_date} - ${event.date.when}</div>
+                            <div class="description">${event.description}</div>
+                        </div>
+                    `;
+                });
+                // Display the fetched events on the page
+                document.getElementById('nearbyEvents').innerHTML = eventsHtml;
+            })
+            .catch(function(error) {
                 console.log(error);
-            }
-        );
+            });
     }
 
 </script>
-
-<!--
-<script>
-    // Function to delete an event
-    function deleteEvent(eventId) {
-        fetch('/delete-event', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ eventId: eventId }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            // If the event was deleted successfully, remove it from the DOM
-            const eventElement = document.getElementById(`event-${eventId}`);
-            if (eventElement) {
-                eventElement.remove();
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
-    
-    // Add event listeners to delete buttons
-    document.querySelectorAll('.removeEvent').forEach(button => {
-        button.addEventListener('click', () => {
-            const eventId = button.dataset.eventId;
-            deleteEvent(eventId);
-        });
-    });
-    
-    // Logout function (if needed)
-    document.getElementById('logout').addEventListener('click', () => {
-        // Handle logout logic here
-    });
-</script> -->
-
-
-<!-- 
-<div class="container">
-    <h1>Upcoming Events</h1>
-    <div id="eventsContainer"></div>
-    <h2>Add New Event</h2>
-    <input type="text" id="eventName" placeholder="Event Name">
-    <input type="datetime-local" id="eventTime" placeholder="Event Time">
-    <textarea id="eventDescription" placeholder="Event Description"></textarea>
-    <button id="addEvent" type="submit">Add Event</button>
-    <button id="logout">Logout</button>
-</div> -->
-
-<!-- Logout button
-<div class="container-fluid d-flex justify-content-end">
-    <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
-</div>
-<br> -->
-
-<!-- index.js for delete event function -->
-<!-- <script type="text/javascript" src="{{ url_for('static', filename = 'deleteEvent.js') }}"></script> -->
-
-<!-- <script>
-
-// // Array to store event data
-// let eventsData = [];
-
-// Function to render events
-// function renderEvents() {
-//     const eventsContainer = document.getElementById('eventsContainer');
-//     eventsContainer.innerHTML = '';
-//     eventsData.forEach(eventData => {
-//         const eventDiv = document.createElement('div');
-//         eventDiv.classList.add('event');
-//         eventDiv.innerHTML = `
-//             <div class="name">${eventData.name}</div>
-//             <div class="time">Time: ${new Date(eventData.time).toLocaleString()}</div>
-//             <div class="description">${eventData.description}</div>
-//             <button class="removeEvent">Remove</button>
-//         `;
-//         eventsContainer.appendChild(eventDiv);
-
-//         // Add event listener to the remove button
-//         eventDiv.querySelector('.removeEvent').addEventListener('click', function() {
-//             eventsData = eventsData.filter(event => event !== eventData);
-//             renderEvents();
-//         });
-//     });
-// }
-
-// // Function to add new event
-// document.getElementById('addEvent').addEventListener('click', function() {
-//     const eventName = document.getElementById('eventName').value;
-//     const eventTime = document.getElementById('eventTime').value;
-//     const eventDescription = document.getElementById('eventDescription').value;
-
-//     if (eventName && eventTime && eventDescription) {
-//         eventsData.push({ name: eventName, time: new Date(eventTime), description: eventDescription });
-//         eventsData.sort((a, b) => a.time - b.time); // Sort events by time
-//         renderEvents();
-
-//         // Clear input fields after adding event
-//         document.getElementById('eventName').value = '';
-//         document.getElementById('eventTime').value = '';
-//         document.getElementById('eventDescription').value = '';
-//     } else {
-//         alert('Please fill in all fields.');
-//     }
-// }); 
-
-// Logout function
-// document.getElementById('logout').addEventListener('click', function() {
-//     // Simulate logout by clearing user data
-//     eventsData = [];
-//     // Redirect to root URL
-//     window.location.href = '/';
-// });
-
-</script> -->
-
 
 </body>
 </html>

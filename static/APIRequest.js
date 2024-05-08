@@ -1,13 +1,13 @@
-function apiRequest (path,obj) {
-    axios.post(path, obj).then(
-        (response) => {
-            let result = response.data;
-            console.log(result);
-        },
-        (error) => {
-            console.log(error);
-        }
-    );
-}
+// APIRequest.js
 
-<script src="https://unpkg.com/ axios/dist/axios.min.js"></script>
+// Function to make an API request
+function apiRequest(path, obj, callback) {
+    axios.post(path, obj)
+        .then((response) => {
+            let result = response.data;
+            callback(result); // Call the callback function with the fetched data
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
