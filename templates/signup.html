@@ -91,6 +91,7 @@
     </style>
     
     <script>
+        // Form validation, valid username, email, and password
         function validateForm() {
             var email = document.getElementById('email').value;
             var password = document.getElementById('password').value;
@@ -127,7 +128,6 @@
 <body>
     <div class="container">
         <h1>Signup Here:</h1>
- 
 
         <!-- Form to enter info for new user-->
         <form action="/signup" method="POST" onsubmit="return validateForm()">

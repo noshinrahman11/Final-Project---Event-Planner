@@ -47,9 +47,9 @@
         padding: 50px;
         border-radius: 20px;
         box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-        width: 90%; /* Adjusted width for better visibility */
-        max-width: 600px; /* Added max-width for responsiveness */
-        margin: 20px auto; /* Centering the container */
+        width: 90%; 
+        max-width: 600px; 
+        margin: 20px auto; 
     }
     h1 {
         color: #333;
@@ -152,6 +152,7 @@
     <!-- <button id="logout">Logout</button> -->
     <a href="/logout"><button type="button">Logout</button></a>
 
+    <!-- Lists events in NYC from api -->
     <h1>Nearby Events</h1>
     <div id="nearbyEvents">
         <!-- Button to fetch events -->
@@ -187,7 +188,7 @@
         events.forEach(event => eventsContainer.appendChild(event));
     });
 
-    // Function to sort events by time (Must reload page for it to work)
+    // Function to sort events by time
     document.getElementById('sortByTime').addEventListener('click', function() {
         const eventsContainer = document.getElementById('eventsContainer');
         const events = Array.from(eventsContainer.querySelectorAll('.event'));
@@ -199,7 +200,7 @@
         events.forEach(event => eventsContainer.appendChild(event));
     });
 
-    // Automatically remove past events
+    // Automatically remove past events (Must reload page for it to be removed)
     document.addEventListener('DOMContentLoaded', function() {
         const eventsContainer = document.getElementById('eventsContainer');
         const events = Array.from(eventsContainer.querySelectorAll('.event'));
@@ -213,7 +214,7 @@
         });
     });
 
-    // Makes sure that all events with empy fields are not added
+    // Form validation, makes sure that all events with empty fields are not added
     function validateForm() {
         var eventName = document.getElementById('eventName').value;
         var eventTime = document.getElementById('eventTime').value;
@@ -227,6 +228,7 @@
         return true; // Allow form submission
     }
 
+    // uses /fetch_events route to display api data in html
     function fetchEventsFromApi() {
         axios.get('/fetch_events')
             .then(function(response) {
@@ -254,4 +256,3 @@
 
 </body>
 </html>
-
