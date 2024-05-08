@@ -54,7 +54,7 @@
         }
         h1 {
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         form {
             margin-top: 20px;
@@ -87,6 +87,9 @@
         button:hover {
             background-color: #555;
         }
+        .back-button {
+            margin-top: 20px; 
+        }
     </style>
     <!-- Flash messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -118,10 +121,13 @@
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" placeholder="Enter your passsword" required>
             </div>
-            
+
             <!-- Submit -->
             <button type="submit">Login</button>
         </form>
+
+        <!-- Back to index Button -->
+        <button class="back-button" onclick="window.location.href = '/';">Back</button> 
     </div>
     <script>
         // Automatically fade out flash messages after 5 seconds

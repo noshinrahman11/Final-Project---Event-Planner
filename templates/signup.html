@@ -27,7 +27,6 @@
             z-index: 999;
             text-align: center;
         }
-
         .flash-message {
             padding: 10px;
             margin-bottom: 10px;
@@ -35,12 +34,10 @@
             border-radius: 5px;
             width: auto;
         }
-
         .flash-message.error {
             color: #fff;
             background-color: rgba(255, 0, 0, 0.7);
         }
-
         .flash-message.success {
             color: #fff;
             background-color: rgba(0, 128, 0, 0.7);
@@ -55,7 +52,7 @@
         }
         h1 {
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         form {
             margin-top: 20px;
@@ -86,6 +83,23 @@
         }
         input[type="submit"]:hover {
             background-color: #555;
+        }
+        button {
+            font-family: 'Playfair Display', serif;
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        .back-button {
+            margin-top: 20px; 
         }
         
     </style>
@@ -127,7 +141,7 @@
 
 <body>
     <div class="container">
-        <h1>Signup Here:</h1>
+        <h1>Signup:</h1>
 
         <!-- Form to enter info for new user-->
         <form action="/signup" method="POST" onsubmit="return validateForm()">
@@ -145,6 +159,9 @@
             
             <input type="submit" value="Register">
         </form>
+        
+        <!-- Back to index Button -->
+        <button class="back-button" onclick="window.location.href = '/';">Back</button> 
     </div>
     <script>
         // Automatically fade out flash messages after 5 seconds
