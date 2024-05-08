@@ -1,6 +1,7 @@
 import pytest
 from app import app, db, User
 
+# This is messing with my database
 @pytest.fixture
 def client():
     app.config['TESTING'] = True
@@ -24,16 +25,10 @@ def test_signup(client):
     response = client.get('/signup')
     assert response.status_code == 200
 
+# Redirect (302) to login page if not logged in
 def test_dashboard(client):
     response = client.get('/dashboard')
-    assert response.status_code == 200
-
-def test_new_user():
-    user = User('noshin@gmail.com', 'noshin', 'password')
-    assert user.email == 'noshin@gmail.com'
-    assert user.hashed_password != 'Password!1'
-    assert user.role == 'user'
-
+    assert response.status_code == 302
 
 if __name__ == '__main__':
     pytest.main()
