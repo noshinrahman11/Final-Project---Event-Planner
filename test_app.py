@@ -25,6 +25,7 @@ def test_signup(client):
     response = client.get('/signup')
     assert response.status_code == 200
 
+# Redirects (302) to index if the user is not logged in
 def test_dashboard(client):
     response = client.get('/dashboard')
     assert response.status_code == 302
