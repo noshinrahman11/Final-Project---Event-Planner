@@ -131,6 +131,9 @@
 
         <!-- Form to enter info for new user-->
         <form action="/signup" method="POST" onsubmit="return validateForm()">
+            <!-- CSRF Token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/> 
+
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" placeholder="Enter your email" required>
             

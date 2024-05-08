@@ -125,6 +125,9 @@
 <body>
     
 <form class="container" id="form-id" action="/dashboard" method="post" onsubmit="return validateForm()">
+    <!-- CSRF Token -->
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    
     <!-- Sorting buttons -->
     <div class="sorting-buttons">
         <button class="button" id="sortByName">Sort by Name</button>

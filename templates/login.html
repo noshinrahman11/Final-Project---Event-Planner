@@ -107,6 +107,9 @@
 
         <!-- Form to enter login info -->
         <form method="post" action="{{ url_for('login') }}">
+            <!-- CSRF Token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
             <div class="form-group">
                 <label for="identifier">Email/Username:</label>
                 <input type="text" id="identifier" name="identifier" placeholder="Enter your email or username" required>
@@ -115,6 +118,7 @@
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" placeholder="Enter your passsword" required>
             </div>
+            
             <!-- Submit -->
             <button type="submit">Login</button>
         </form>
