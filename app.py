@@ -134,7 +134,7 @@ def dashboard():
         return redirect(url_for('dashboard'))
 
     user_events = current_user.events
-    return render_template('dashboard2.html', events=user_events, user=current_user) #, events=events
+    return render_template('dashboard.html', events=user_events, user=current_user) #, events=events
 
 @app.route('/fetch_events')
 def fetch_events():
